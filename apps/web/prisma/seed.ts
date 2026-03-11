@@ -17,7 +17,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-16",
     description: "Knebøy med strikk rundt knærne for å aktivere stabiliserende muskler.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/190060583",
   },
   {
     name: "Utfall fremover",
@@ -26,7 +26,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8",
     description: "Utfall fremover for styrke og balanse. 8 repetisjoner på hvert ben.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/192610574",
   },
   {
     name: "Utfall bakover",
@@ -35,7 +35,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8",
     description: "Utfall bakover for styrke og koordinasjon. 8 repetisjoner på hvert ben.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/192610565",
   },
   {
     name: "Utfall sideveis",
@@ -44,7 +44,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8",
     description: "Sideveis utfall for lateral stabilitet. 8 repetisjoner på hvert ben.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/192610638",
   },
   {
     name: "Hopp skulder mot skulder",
@@ -53,7 +53,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8",
     description: "Hopp med kontakt skulder mot skulder for å trene landingskontroll.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/195625606",
   },
   {
     name: "Nordic Hamstrings",
@@ -63,7 +63,7 @@ const exercises = [
     defaultReps: "3-5",
     description:
       "Eksentrisk hamstringsøvelse. Start på knærne og senk overkroppen kontrollert fremover.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/210810547",
   },
   // Nivå 2
   {
@@ -73,7 +73,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "5-10m",
     description: "Gående utfall over 5-10 meter for dynamisk styrke.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/193700039",
   },
   {
     name: "Knebøy med strikk +",
@@ -82,7 +82,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-16",
     description: "Progresjon av knebøy med strikk med økt vanskelighetsgrad.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/173355199",
   },
   {
     name: "Hopp med dytt",
@@ -91,7 +91,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-10",
     description: "Hopp med ekstern forstyrrelse for å trene knestabilitet ved landing.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/211342497",
   },
   {
     name: "Telemarkshopp",
@@ -100,7 +100,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-16",
     description: "Telemarkshopp for styrke og kontroll. Repetisjoner på hvert ben.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/190101410",
   },
   {
     name: "Stuperen",
@@ -109,7 +109,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-10",
     description: "Ettbens øvelse for balanse og styrke. 8-10 repetisjoner på hvert ben.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/192610268",
   },
   {
     name: "Nordic Hamstrings",
@@ -119,7 +119,7 @@ const exercises = [
     defaultReps: "6-8",
     description:
       "Eksentrisk hamstringsøvelse, nivå 2. Økt antall repetisjoner for progresjon.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/210810547",
   },
   // Nivå 3
   {
@@ -129,7 +129,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-12",
     description: "Innhopp med fokus på kontrollert landing for knestabilitet.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/1116764059",
   },
   {
     name: "Ettbens knebøy",
@@ -138,7 +138,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "maks",
     description: "Ettbens knebøy – så mange du klarer med god kontroll.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/210808715",
   },
   {
     name: "Vendinger",
@@ -147,7 +147,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-12",
     description: "Raske retningsendringer for å trene knekontroll i bevegelse.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/192610658",
   },
   {
     name: "Ettbens sidehopp",
@@ -156,7 +156,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-10",
     description: "Sideveis hopp på ett ben for lateral knestabilitet.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/192610522",
   },
   {
     name: "Flyer",
@@ -165,7 +165,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "6-8",
     description: "Dynamisk balanse- og styrkeøvelse for kne og hofte.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/190060569",
   },
   {
     name: "Nordic Hamstrings",
@@ -175,7 +175,7 @@ const exercises = [
     defaultReps: "8-12",
     description:
       "Eksentrisk hamstringsøvelse, nivå 3. Full progresjon med 8-12 repetisjoner.",
-    videoUrl: "https://skadefri.no/kroppsdeler/kne/skadefri-kne/",
+    videoUrl: "https://player.vimeo.com/video/173355238",
   },
 
   // --- SKULDER (Shoulder) ---
@@ -187,7 +187,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-16",
     description: "Rotasjonsøvelse for overkroppen som aktiverer skulder og kjernemuskulatur.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/175198827",
   },
   {
     name: "Y oppover",
@@ -196,7 +196,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-16",
     description: "Løft armene i Y-form for å styrke øvre rygg og skulderblad.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/194350317",
   },
   {
     name: "Sideliggende skuldertøyning",
@@ -205,7 +205,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "30s",
     description: "Tøyning av bakre skulderkapsel i sideliggende stilling. Hold i 30 sekunder.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/194350167",
   },
   {
     name: "Utoverrotasjon",
@@ -214,7 +214,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "10-20",
     description: "Utoverrotasjon av skulder for å styrke rotatorcuffen.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/194350382",
   },
   {
     name: "Slipp og grip",
@@ -223,7 +223,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-16",
     description: "Øvelse for skulderens koordinasjon og reaksjonsevne.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/194350395",
   },
   // Nivå 2
   {
@@ -233,7 +233,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-16",
     description: "Planke med ballpasninger for skulder- og kjernesstabilitet.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/211338430",
   },
   {
     name: "Pil og bue",
@@ -242,7 +242,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-16",
     description: "Rotasjons- og stabiliseringsøvelse for skulder.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/194350331",
   },
   {
     name: "Rotasjon av overkropp",
@@ -251,7 +251,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-16",
     description: "Progresjon av overkroppsrotasjon med økt motstand.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/194350253",
   },
   {
     name: "Ryggliggende skuldertøyning",
@@ -260,7 +260,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "30s",
     description: "Tøyning av bakre skulder i ryggliggende stilling. Hold i 30 sekunder.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/194350184",
   },
   {
     name: "Slipp og grip",
@@ -269,7 +269,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-16",
     description: "Progresjon av slipp og grip med økt vanskelighetsgrad.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/194350395",
   },
   // Nivå 3
   {
@@ -279,7 +279,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-16",
     description: "Avansert overkroppsrotasjon for maksimal skulderstabilitet.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/194350253",
   },
   {
     name: "Senking av arm",
@@ -288,7 +288,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-16",
     description: "Kontrollert senking av arm for eksentrisk skulderstyrke.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/194350363",
   },
   {
     name: "Ryggliggende skuldertøyning",
@@ -297,7 +297,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "30s",
     description: "Avansert tøyning av bakre skulder. Hold i 30 sekunder.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/194350184",
   },
   {
     name: "Sideliggende skuldertøyning",
@@ -306,7 +306,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "30s",
     description: "Avansert tøyning i sideliggende stilling. Hold i 30 sekunder.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/194350167",
   },
   {
     name: "Kast bakover",
@@ -315,7 +315,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "10-20",
     description: "Kast bakover for eksplosiv styrke og bevegelighet i skulder.",
-    videoUrl: "https://skadefri.no/kroppsdeler/skulder/skadefri-skulder/",
+    videoUrl: "https://player.vimeo.com/video/194350482",
   },
 
   // --- ANKEL OG FOT (Ankle & Foot) ---
@@ -326,7 +326,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "30s",
     description: "Stå på ett ben med øynene åpne for å trene ankelstabilitet.",
-    videoUrl: "https://skadefri.no/kroppsdeler/ankel-og-fot/skadefri-ankel/",
+    videoUrl: "https://player.vimeo.com/video/1120848668",
   },
   {
     name: "Tåhev",
@@ -335,7 +335,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "12-15",
     description: "Tåhev for å styrke leggmuskulatur og ankelstabilitet.",
-    videoUrl: "https://skadefri.no/kroppsdeler/ankel-og-fot/skadefri-ankel/",
+    videoUrl: null,
   },
   {
     name: "Ettbens tåhev",
@@ -344,7 +344,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "10-12",
     description: "Tåhev på ett ben for økt belastning og balanse.",
-    videoUrl: "https://skadefri.no/kroppsdeler/ankel-og-fot/skadefri-ankel/",
+    videoUrl: null,
   },
   {
     name: "Ettbens hopp",
@@ -353,7 +353,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-10",
     description: "Hopp og landing på ett ben for dynamisk ankelstabilitet.",
-    videoUrl: "https://skadefri.no/kroppsdeler/ankel-og-fot/skadefri-ankel/",
+    videoUrl: null,
   },
 
   // --- HOFTE OG LYSKE (Hip & Groin) ---
@@ -364,7 +364,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-12",
     description: "Styrkeøvelse for adduktorene (innerlår) for å forebygge lyskeskader.",
-    videoUrl: "https://skadefri.no/kroppsdeler/hofte-og-lyske/skadefri-hofte/",
+    videoUrl: "https://player.vimeo.com/video/217466670",
   },
   {
     name: "Sideliggende hofteløft",
@@ -373,7 +373,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "10-15",
     description: "Sideliggende hofteløft for å styrke hofteabduktorene.",
-    videoUrl: "https://skadefri.no/kroppsdeler/hofte-og-lyske/skadefri-hofte/",
+    videoUrl: "https://player.vimeo.com/video/175198890",
   },
   {
     name: "Sumo knebøy",
@@ -382,7 +382,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-12",
     description: "Bred knebøy som aktiverer adduktorer og hoftemuskulatur.",
-    videoUrl: "https://skadefri.no/kroppsdeler/hofte-og-lyske/skadefri-hofte/",
+    videoUrl: null,
   },
 
   // --- RYGG (Back) ---
@@ -393,7 +393,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "10-15",
     description: "Mobilisering av ryggsøylen gjennom fleksjon og ekstensjon.",
-    videoUrl: "https://skadefri.no/kroppsdeler/rygg/skadefri-rygg/",
+    videoUrl: null,
   },
   {
     name: "Bekkenløft",
@@ -402,7 +402,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "10-15",
     description: "Bekkenløft for å styrke sete- og kjernemuskulatur.",
-    videoUrl: "https://skadefri.no/kroppsdeler/rygg/skadefri-rygg/",
+    videoUrl: "https://player.vimeo.com/video/190101388",
   },
   {
     name: "Planke",
@@ -411,7 +411,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "30-60s",
     description: "Planke for statisk kjernestabilitet.",
-    videoUrl: "https://skadefri.no/kroppsdeler/rygg/skadefri-rygg/",
+    videoUrl: null,
   },
   {
     name: "Sideplanka",
@@ -420,7 +420,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "20-30s",
     description: "Sideplanke for lateral kjernestyrke.",
-    videoUrl: "https://skadefri.no/kroppsdeler/rygg/skadefri-rygg/",
+    videoUrl: null,
   },
 
   // --- LÅR OG HAMSTRINGS (Thigh & Hamstrings) ---
@@ -431,7 +431,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "10-15",
     description: "Grunnleggende knebøy for styrke i lår og sete.",
-    videoUrl: "https://skadefri.no/kroppsdeler/lar-og-hamstrings/skadefri-lar/",
+    videoUrl: null,
   },
   {
     name: "Romanian Deadlift",
@@ -440,7 +440,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "8-12",
     description: "Stivbent markløft for å styrke hamstrings og nedre rygg.",
-    videoUrl: "https://skadefri.no/kroppsdeler/lar-og-hamstrings/skadefri-lar/",
+    videoUrl: null,
   },
   {
     name: "Nordic Hamstrings",
@@ -449,7 +449,7 @@ const exercises = [
     defaultSets: 3,
     defaultReps: "6-10",
     description: "Eksentrisk hamstringsøvelse for å forebygge hamstringskader.",
-    videoUrl: "https://skadefri.no/kroppsdeler/lar-og-hamstrings/skadefri-lar/",
+    videoUrl: "https://player.vimeo.com/video/175198939",
   },
 ];
 
