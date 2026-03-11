@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -10,12 +11,6 @@ import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-
-const LEVEL_LABELS: Record<number, string> = {
-  1: "Nivå 1",
-  2: "Nivå 2",
-  3: "Nivå 3",
-};
 
 const LEVEL_COLORS: Record<number, "success" | "warning" | "error"> = {
   1: "success",
@@ -44,6 +39,8 @@ export default function ExerciseDetail({
   isFavourite: initialFavourite,
 }: ExerciseDetailProps) {
   const router = useRouter();
+  const t = useTranslations("exerciseDetail");
+  const tc = useTranslations("common");
   const [isFavourite, setIsFavourite] = useState(initialFavourite);
   const [toggling, setToggling] = useState(false);
 
@@ -83,7 +80,7 @@ export default function ExerciseDetail({
       <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
         <Chip label={exercise.bodyPart} variant="outlined" />
         <Chip
-          label={LEVEL_LABELS[exercise.level]}
+          label={tc("level", { level: exercise.level })}
           color={LEVEL_COLORS[exercise.level]}
           size="small"
         />
@@ -103,7 +100,7 @@ export default function ExerciseDetail({
       {exercise.videoUrl && (
         <Box sx={{ mb: 3 }}>
           <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 1 }}>
-            Video
+            {t("video")}
           </Typography>
           <Box
             sx={{
@@ -131,14 +128,14 @@ export default function ExerciseDetail({
             />
           </Box>
           <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
-            Kilde: skadefri.no
+            {t("source")}
           </Typography>
         </Box>
       )}
 
       {!exercise.videoUrl && !exercise.description && (
         <Typography color="text.secondary" sx={{ mt: 4, textAlign: "center" }}>
-          Ingen beskrivelse eller video tilgjengelig for denne øvelsen.
+          {t("noContent")}
         </Typography>
       )}
     </Container>

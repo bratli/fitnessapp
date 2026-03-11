@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 import ThemeRegistry from "@/components/ThemeRegistry";
 import "./globals.css";
 
@@ -11,15 +13,20 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Fitness App",
-  description: "A fitness tracking application",
+  title: "STERK — Tren smart. Bli skadefri.",
+  description: "Treningsapp for skadefri trening med øvelser, treningsøkter og historikk.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={roboto.variable}>
-        <ThemeRegistry>{children}</ThemeRegistry>
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          <ThemeRegistry>{children}</ThemeRegistry>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

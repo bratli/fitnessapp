@@ -1,0 +1,93 @@
+{
+  "common": {
+    "all": "All",
+    "level": "Level {level}",
+    "reps": "Reps",
+    "weight": "Weight (kg)",
+    "set": "Set {number}",
+    "setHeader": "Set",
+    "sets": "sets",
+    "exercises": "exercises",
+    "selected": "{count} selected",
+    "logOut": "Log out"
+  },
+  "nav": {
+    "workouts": "Workouts",
+    "new": "New",
+    "exercises": "Exercises",
+    "history": "History"
+  },
+  "slogan": "Train smart. Stay injury-free.",
+  "login": {
+    "failed": "Login failed",
+    "username": "Username",
+    "password": "Password",
+    "loggingIn": "Logging in...",
+    "logIn": "Log in",
+    "noAccount": "Don't have an account?",
+    "register": "Register"
+  },
+  "register": {
+    "failed": "Registration failed",
+    "username": "Username",
+    "email": "Email",
+    "nameOptional": "Name (optional)",
+    "password": "Password",
+    "minChars": "At least 8 characters",
+    "registering": "Registering...",
+    "register": "Register",
+    "hasAccount": "Already have an account?",
+    "logIn": "Log in"
+  },
+  "exerciseLibrary": {
+    "title": "Exercises",
+    "favourites": "Favourites",
+    "noFavourites": "You have no favourite exercises yet. Tap the heart on an exercise to add it."
+  },
+  "exerciseDetail": {
+    "video": "Video",
+    "source": "Source: skadefri.no",
+    "noContent": "No description or video available for this exercise."
+  },
+  "workoutList": {
+    "title": "Workouts",
+    "new": "New",
+    "empty": "No workouts yet. Create your first!"
+  },
+  "createWorkout": {
+    "title": "New workout",
+    "nameLabel": "Workout name",
+    "namePlaceholder": "E.g. Knee workout Monday",
+    "exercises": "Exercises",
+    "nameRequired": "Enter a name for the workout",
+    "exercisesRequired": "You must add at least one exercise before creating the workout",
+    "sessionExpired": "Your session has expired. Please log in again.",
+    "genericError": "Something went wrong. Try again.",
+    "creating": "Creating...",
+    "create": "Create workout",
+    "addSet": "Add set",
+    "addExercise": "Add exercise",
+    "pickExercise": "Choose exercise"
+  },
+  "activeWorkout": {
+    "progress": "Progress",
+    "addExercise": "Add exercise",
+    "bodyPart": "Body part",
+    "finish": "Finish workout",
+    "finishing": "Finishing...",
+    "celebrationTitle": "Great job! 🎉",
+    "celebrationMessage": "You completed the entire workout. Strong effort!",
+    "celebrationClose": "Done"
+  },
+  "workoutOverview": {
+    "start": "Start workout",
+    "starting": "Starting...",
+    "activeSession": "You have an active session",
+    "resume": "Resume"
+  },
+  "history": {
+    "title": "History",
+    "empty": "No workout history yet.",
+    "completed": "Completed"
+  }
+}

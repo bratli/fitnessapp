@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -9,11 +10,14 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import Link from "@mui/material/Link";
-import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import NextLink from "next/link";
+import SterkLogo from "@/components/SterkLogo";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const t = useTranslations("register");
+  const ts = useTranslations();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,7 +43,7 @@ export default function RegisterPage() {
       } else if (Array.isArray(data.error)) {
         setError(data.error.map((e: { message: string }) => e.message).join(". "));
       } else {
-        setError("Registrering feilet");
+        setError(t("failed"));
       }
       setLoading(false);
       return;
@@ -51,6 +55,9 @@ export default function RegisterPage() {
 
   return (
     <Container maxWidth="xs">
+      <Box sx={{ position: "absolute", top: 16, right: 16 }}>
+        <LanguageSwitcher />
+      </Box>
       <Box
         sx={{
           display: "flex",
@@ -60,9 +67,21 @@ export default function RegisterPage() {
           minHeight: "100vh",
         }}
       >
-        <FitnessCenterIcon sx={{ fontSize: 56, color: "primary.main", mb: 1 }} />
-        <Typography variant="h4" fontWeight={800} gutterBottom>
-          Registrer deg
+        <SterkLogo sx={{ fontSize: 72, mb: 1 }} />
+        <Typography
+          variant="h4"
+          fontWeight={900}
+          sx={{
+            letterSpacing: "0.1em",
+            background: "linear-gradient(135deg, #00E676, #66FFA6)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          STERK
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+          {ts("slogan")}
         </Typography>
 
         {error && (
@@ -73,7 +92,7 @@ export default function RegisterPage() {
 
         <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%" }}>
           <TextField
-            label="Brukernavn"
+            label={t("username")}
             fullWidth
             required
             autoComplete="username"
@@ -82,7 +101,7 @@ export default function RegisterPage() {
             sx={{ mb: 2 }}
           />
           <TextField
-            label="E-post"
+            label={t("email")}
             type="email"
             fullWidth
             required
@@ -92,7 +111,7 @@ export default function RegisterPage() {
             sx={{ mb: 2 }}
           />
           <TextField
-            label="Navn (valgfritt)"
+            label={t("nameOptional")}
             fullWidth
             autoComplete="name"
             value={name}
@@ -100,14 +119,14 @@ export default function RegisterPage() {
             sx={{ mb: 2 }}
           />
           <TextField
-            label="Passord"
+            label={t("password")}
             type="password"
             fullWidth
             required
             autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            helperText="Minst 8 tegn"
+            helperText={t("minChars")}
             sx={{ mb: 3 }}
           />
           <Button
@@ -117,14 +136,14 @@ export default function RegisterPage() {
             size="large"
             disabled={loading}
           >
-            {loading ? "Registrerer..." : "Registrer"}
+            {loading ? t("registering") : t("register")}
           </Button>
         </Box>
 
         <Typography variant="body2" sx={{ mt: 2 }}>
-          Har du allerede en konto?{" "}
+          {t("hasAccount")}{" "}
           <Link component={NextLink} href="/login">
-            Logg inn
+            {t("logIn")}
           </Link>
         </Typography>
       </Box>

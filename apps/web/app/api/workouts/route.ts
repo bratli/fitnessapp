@@ -28,6 +28,11 @@ export async function POST(request: NextRequest) {
   const session = await verifySession();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const user = await prisma.user.findUnique({ where: { id: session.userId } });
+  if (!user) {
+    return NextResponse.json({ error: "User not found. Please log in again." }, { status: 401 });
+  }
+
   const body = await request.json();
   const result = createWorkoutInputSchema.safeParse(body);
 

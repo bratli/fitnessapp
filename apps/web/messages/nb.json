@@ -1,0 +1,93 @@
+{
+  "common": {
+    "all": "Alle",
+    "level": "Nivå {level}",
+    "reps": "Reps",
+    "weight": "Vekt (kg)",
+    "set": "Sett {number}",
+    "setHeader": "Sett",
+    "sets": "sett",
+    "exercises": "øvelser",
+    "selected": "{count} valgt",
+    "logOut": "Logg ut"
+  },
+  "nav": {
+    "workouts": "Treningsøkter",
+    "new": "Ny",
+    "exercises": "Øvelser",
+    "history": "Historikk"
+  },
+  "slogan": "Tren smart. Bli skadefri.",
+  "login": {
+    "failed": "Innlogging feilet",
+    "username": "Brukernavn",
+    "password": "Passord",
+    "loggingIn": "Logger inn...",
+    "logIn": "Logg inn",
+    "noAccount": "Har du ikke en konto?",
+    "register": "Registrer deg"
+  },
+  "register": {
+    "failed": "Registrering feilet",
+    "username": "Brukernavn",
+    "email": "E-post",
+    "nameOptional": "Navn (valgfritt)",
+    "password": "Passord",
+    "minChars": "Minst 8 tegn",
+    "registering": "Registrerer...",
+    "register": "Registrer",
+    "hasAccount": "Har du allerede en konto?",
+    "logIn": "Logg inn"
+  },
+  "exerciseLibrary": {
+    "title": "Øvelser",
+    "favourites": "Favoritter",
+    "noFavourites": "Du har ingen favorittøvelser ennå. Trykk på hjertet ved en øvelse for å legge den til."
+  },
+  "exerciseDetail": {
+    "video": "Video",
+    "source": "Kilde: skadefri.no",
+    "noContent": "Ingen beskrivelse eller video tilgjengelig for denne øvelsen."
+  },
+  "workoutList": {
+    "title": "Treningsøkter",
+    "new": "Ny",
+    "empty": "Ingen treningsøkter ennå. Opprett din første!"
+  },
+  "createWorkout": {
+    "title": "Ny treningsøkt",
+    "nameLabel": "Navn på treningsøkt",
+    "namePlaceholder": "F.eks. Knetrening mandag",
+    "exercises": "Øvelser",
+    "nameRequired": "Skriv inn et navn for treningsøkten",
+    "exercisesRequired": "Du må legge til minst én øvelse før du kan opprette treningsøkten",
+    "sessionExpired": "Økten din har utløpt. Vennligst logg inn på nytt.",
+    "genericError": "Noe gikk galt. Prøv igjen.",
+    "creating": "Oppretter...",
+    "create": "Opprett treningsøkt",
+    "addSet": "Legg til sett",
+    "addExercise": "Legg til øvelse",
+    "pickExercise": "Velg øvelse"
+  },
+  "activeWorkout": {
+    "progress": "Fremgang",
+    "addExercise": "Legg til øvelse",
+    "bodyPart": "Kroppsdel",
+    "finish": "Fullfør treningsøkt",
+    "finishing": "Fullfører...",
+    "celebrationTitle": "Bra jobba! 🎉",
+    "celebrationMessage": "Du har fullført hele treningsøkten. Sterk innsats!",
+    "celebrationClose": "Ferdig"
+  },
+  "workoutOverview": {
+    "start": "Start treningsøkt",
+    "starting": "Starter...",
+    "activeSession": "Du har en pågående økt",
+    "resume": "Fortsett"
+  },
+  "history": {
+    "title": "Historikk",
+    "empty": "Ingen treningshistorikk ennå.",
+    "completed": "Utført"
+  }
+}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -11,14 +12,19 @@ import CardContent from "@mui/material/CardContent";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import Chip from "@mui/material/Chip";
 import Alert from "@mui/material/Alert";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 
 interface Exercise {
   id: string;
@@ -27,6 +33,7 @@ interface Exercise {
   level: number;
   defaultSets: number;
   defaultReps: string;
+  videoUrl: string | null;
 }
 
 interface SelectedExercise {
@@ -40,17 +47,22 @@ interface CreateWorkoutFormProps {
 
 export default function CreateWorkoutForm({ exercises }: CreateWorkoutFormProps) {
   const router = useRouter();
+  const t = useTranslations("createWorkout");
+  const tc = useTranslations("common");
   const [name, setName] = useState("");
+  const [nameError, setNameError] = useState("");
   const [selectedExercises, setSelectedExercises] = useState<SelectedExercise[]>([]);
-  const [bodyPartFilter, setBodyPartFilter] = useState("");
+  const [exercisesError, setExercisesError] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [showPicker, setShowPicker] = useState(false);
+  const [pickerTab, setPickerTab] = useState(0);
 
   const bodyParts = [...new Set(exercises.map((e) => e.bodyPart))];
+  const pickerTabs = [tc("all"), ...bodyParts];
 
-  const filteredExercises = bodyPartFilter
-    ? exercises.filter((e) => e.bodyPart === bodyPartFilter)
-    : exercises;
+  const pickerExercises =
+    pickerTab === 0 ? exercises : exercises.filter((e) => e.bodyPart === pickerTabs[pickerTab]);
 
   function addExercise(exerciseId: string) {
     const exercise = exercises.find((e) => e.id === exerciseId);
@@ -66,6 +78,8 @@ export default function CreateWorkoutForm({ exercises }: CreateWorkoutFormProps)
     }));
 
     setSelectedExercises((prev) => [...prev, { exerciseId, sets }]);
+    setExercisesError("");
+    setShowPicker(false);
   }
 
   function removeExercise(index: number) {
@@ -121,17 +135,24 @@ export default function CreateWorkoutForm({ exercises }: CreateWorkoutFormProps)
   }
 
   async function handleSubmit() {
+    let hasError = false;
+    setNameError("");
+    setExercisesError("");
+    setError("");
+
     if (!name.trim()) {
-      setError("Gi treningsøkten et navn");
-      return;
-    }
-    if (selectedExercises.length === 0) {
-      setError("Legg til minst én øvelse");
-      return;
+      setNameError(t("nameRequired"));
+      hasError = true;
     }
 
+    if (selectedExercises.length === 0) {
+      setExercisesError(t("exercisesRequired"));
+      hasError = true;
+    }
+
+    if (hasError) return;
+
     setSubmitting(true);
-    setError("");
 
     const res = await fetch("/api/workouts", {
       method: "POST",
@@ -140,7 +161,12 @@ export default function CreateWorkoutForm({ exercises }: CreateWorkoutFormProps)
     });
 
     if (!res.ok) {
-      setError("Kunne ikke opprette treningsøkt");
+      if (res.status === 401) {
+        setError(t("sessionExpired"));
+        setTimeout(() => router.push("/login"), 2000);
+      } else {
+        setError(t("genericError"));
+      }
       setSubmitting(false);
       return;
     }
@@ -152,7 +178,7 @@ export default function CreateWorkoutForm({ exercises }: CreateWorkoutFormProps)
   return (
     <Container maxWidth="sm" sx={{ py: 2 }}>
       <Typography variant="h5" fontWeight="bold" gutterBottom>
-        Ny treningsøkt
+        {t("title")}
       </Typography>
 
       {error && (
@@ -162,51 +188,37 @@ export default function CreateWorkoutForm({ exercises }: CreateWorkoutFormProps)
       )}
 
       <TextField
-        label="Navn på treningsøkt"
+        label={t("nameLabel")}
+        placeholder={t("namePlaceholder")}
         fullWidth
         value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={(e) => {
+          setName(e.target.value);
+          if (nameError) setNameError("");
+        }}
+        error={!!nameError}
+        helperText={nameError}
         sx={{ mb: 3 }}
       />
 
-      <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-        Legg til øvelser
-      </Typography>
-
-      <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
-        <FormControl size="small" sx={{ minWidth: 120 }}>
-          <InputLabel>Kroppsdel</InputLabel>
-          <Select
-            value={bodyPartFilter}
-            label="Kroppsdel"
-            onChange={(e) => setBodyPartFilter(e.target.value)}
-          >
-            <MenuItem value="">Alle</MenuItem>
-            {bodyParts.map((bp) => (
-              <MenuItem key={bp} value={bp}>
-                {bp}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl size="small" sx={{ flex: 1 }}>
-          <InputLabel>Velg øvelse</InputLabel>
-          <Select
-            value=""
-            label="Velg øvelse"
-            onChange={(e) => addExercise(e.target.value)}
-          >
-            {filteredExercises.map((ex) => (
-              <MenuItem key={ex.id} value={ex.id}>
-                {ex.name} ({ex.bodyPart}, Nivå {ex.level})
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
+        <Typography variant="subtitle1" fontWeight="bold">
+          {t("exercises")}
+        </Typography>
+        <Chip
+          label={tc("selected", { count: selectedExercises.length })}
+          size="small"
+          color={selectedExercises.length > 0 ? "primary" : "default"}
+        />
       </Box>
 
-      <Stack spacing={2} sx={{ mb: 3 }}>
+      {exercisesError && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          {exercisesError}
+        </Alert>
+      )}
+
+      <Stack spacing={2} sx={{ mb: 2 }}>
         {selectedExercises.map((selEx, exIndex) => {
           const exercise = exercises.find((e) => e.id === selEx.exerciseId);
           if (!exercise) return null;
@@ -244,10 +256,10 @@ export default function CreateWorkoutForm({ exercises }: CreateWorkoutFormProps)
                     }}
                   >
                     <Typography variant="body2" sx={{ minWidth: 40 }}>
-                      Sett {set.setNumber}
+                      {tc("set", { number: set.setNumber })}
                     </Typography>
                     <TextField
-                      label="Reps"
+                      label={tc("reps")}
                       type="number"
                       size="small"
                       value={set.reps ?? ""}
@@ -255,7 +267,7 @@ export default function CreateWorkoutForm({ exercises }: CreateWorkoutFormProps)
                       sx={{ width: 80 }}
                     />
                     <TextField
-                      label="Vekt (kg)"
+                      label={tc("weight")}
                       type="number"
                       size="small"
                       value={set.weight ?? ""}
@@ -270,12 +282,8 @@ export default function CreateWorkoutForm({ exercises }: CreateWorkoutFormProps)
                   </Box>
                 ))}
 
-                <Button
-                  size="small"
-                  startIcon={<AddIcon />}
-                  onClick={() => addSet(exIndex)}
-                >
-                  Legg til sett
+                <Button size="small" startIcon={<AddIcon />} onClick={() => addSet(exIndex)}>
+                  {t("addSet")}
                 </Button>
               </CardContent>
             </Card>
@@ -284,14 +292,54 @@ export default function CreateWorkoutForm({ exercises }: CreateWorkoutFormProps)
       </Stack>
 
       <Button
+        variant="outlined"
+        fullWidth
+        startIcon={<AddIcon />}
+        onClick={() => setShowPicker(true)}
+        sx={{ mb: 3 }}
+      >
+        {t("addExercise")}
+      </Button>
+
+      <Button
         variant="contained"
         fullWidth
         size="large"
         onClick={handleSubmit}
         disabled={submitting}
       >
-        {submitting ? "Oppretter..." : "Opprett treningsøkt"}
+        {submitting ? t("creating") : t("create")}
       </Button>
+
+      <Dialog open={showPicker} onClose={() => setShowPicker(false)} fullWidth maxWidth="sm">
+        <DialogTitle>{t("pickExercise")}</DialogTitle>
+        <DialogContent sx={{ px: 0, pb: 0 }}>
+          <Tabs
+            value={pickerTab}
+            onChange={(_, v) => setPickerTab(v)}
+            variant="scrollable"
+            scrollButtons="auto"
+            sx={{ px: 2, mb: 1 }}
+          >
+            {pickerTabs.map((label) => (
+              <Tab key={label} label={label} />
+            ))}
+          </Tabs>
+          <List disablePadding>
+            {pickerExercises.map((ex) => (
+              <ListItemButton key={ex.id} onClick={() => addExercise(ex.id)}>
+                <ListItemText
+                  primary={ex.name}
+                  secondary={`${ex.bodyPart} · ${tc("level", { level: ex.level })} · ${ex.defaultSets} x ${ex.defaultReps}`}
+                />
+                {ex.videoUrl && (
+                  <PlayCircleOutlineIcon fontSize="small" color="primary" sx={{ ml: 1 }} />
+                )}
+              </ListItemButton>
+            ))}
+          </List>
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 }

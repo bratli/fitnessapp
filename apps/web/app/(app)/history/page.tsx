@@ -8,7 +8,11 @@ export default async function HistoryPage() {
   if (!session) redirect("/login");
 
   const workouts = await prisma.workout.findMany({
-    where: { userId: session.userId },
+    where: {
+      userId: session.userId,
+      templateId: { not: null },
+      completed: true,
+    },
     include: {
       exercises: {
         include: {

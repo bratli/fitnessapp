@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
@@ -13,8 +14,23 @@ import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import LinearProgress from "@mui/material/LinearProgress";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import AddIcon from "@mui/icons-material/Add";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import DialogActions from "@mui/material/DialogActions";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
 interface ExerciseSet {
   id: string;
@@ -49,11 +65,32 @@ interface Workout {
 
 interface ActiveWorkoutProps {
   workout: Workout;
+  allExercises: {
+    id: string;
+    name: string;
+    bodyPart: string;
+    level: number;
+    defaultSets: number;
+    defaultReps: string;
+    videoUrl: string | null;
+  }[];
 }
 
-export default function ActiveWorkout({ workout: initialWorkout }: ActiveWorkoutProps) {
+export default function ActiveWorkout({ workout: initialWorkout, allExercises }: ActiveWorkoutProps) {
   const router = useRouter();
+  const t = useTranslations("activeWorkout");
+  const tc = useTranslations("common");
   const [workout, setWorkout] = useState(initialWorkout);
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [bodyPartFilter, setBodyPartFilter] = useState("");
+  const [addingExercise, setAddingExercise] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [finishing, setFinishing] = useState(false);
+
+  const bodyParts = [...new Set(allExercises.map((e) => e.bodyPart))];
+  const filteredExercises = bodyPartFilter
+    ? allExercises.filter((e) => e.bodyPart === bodyPartFilter)
+    : allExercises;
 
   const totalSets = workout.exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
   const completedSets = workout.exercises.reduce(
@@ -71,16 +108,34 @@ export default function ActiveWorkout({ workout: initialWorkout }: ActiveWorkout
 
     if (!res.ok) return;
 
-    setWorkout((prev) => ({
-      ...prev,
-      exercises: prev.exercises.map((ex) => {
-        if (ex.id !== workoutExerciseId) return ex;
-        return {
-          ...ex,
-          sets: ex.sets.map((s) => (s.id === setId ? { ...s, completed } : s)),
-        };
-      }),
-    }));
+    setWorkout((prev) => {
+      const updated = {
+        ...prev,
+        exercises: prev.exercises.map((ex) => {
+          if (ex.id !== workoutExerciseId) return ex;
+          return {
+            ...ex,
+            sets: ex.sets.map((s) => (s.id === setId ? { ...s, completed } : s)),
+          };
+        }),
+      };
+
+      if (completed) {
+        const allDone = updated.exercises.every((ex) => ex.sets.every((s) => s.completed));
+        if (allDone) {
+          finishWorkout();
+        }
+      }
+
+      return updated;
+    });
+  }
+
+  async function finishWorkout() {
+    setFinishing(true);
+    await fetch(`/api/workouts/${workout.id}`, { method: "PATCH" });
+    setShowCelebration(true);
+    setFinishing(false);
   }
 
   async function updateSetField(
@@ -109,6 +164,40 @@ export default function ActiveWorkout({ workout: initialWorkout }: ActiveWorkout
     });
   }
 
+  async function addExerciseToWorkout(exerciseId: string) {
+    const exercise = allExercises.find((e) => e.id === exerciseId);
+    if (!exercise) return;
+
+    setAddingExercise(true);
+
+    const repsNum = parseInt(exercise.defaultReps, 10);
+    const defaultReps = Number.isNaN(repsNum) ? undefined : repsNum;
+
+    const sets = Array.from({ length: exercise.defaultSets }, (_, i) => ({
+      setNumber: i + 1,
+      reps: defaultReps,
+      weight: undefined as number | undefined,
+      duration: undefined as number | undefined,
+    }));
+
+    const res = await fetch(`/api/workouts/${workout.id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ exerciseId, sets }),
+    });
+
+    if (res.ok) {
+      const workoutExercise = await res.json();
+      setWorkout((prev) => ({
+        ...prev,
+        exercises: [...prev.exercises, workoutExercise],
+      }));
+    }
+
+    setAddingExercise(false);
+    setShowAddDialog(false);
+  }
+
   return (
     <Container maxWidth="sm" sx={{ py: 2 }}>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
@@ -123,10 +212,10 @@ export default function ActiveWorkout({ workout: initialWorkout }: ActiveWorkout
       <Box sx={{ mb: 3 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}>
           <Typography variant="body2" color="text.secondary">
-            Fremgang
+            {t("progress")}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {completedSets}/{totalSets} sett
+            {completedSets}/{totalSets} {tc("sets")}
           </Typography>
         </Box>
         <LinearProgress
@@ -185,10 +274,10 @@ export default function ActiveWorkout({ workout: initialWorkout }: ActiveWorkout
                     size="small"
                   />
                   <Typography variant="body2" sx={{ minWidth: 40 }}>
-                    Sett {set.setNumber}
+                    {tc("set", { number: set.setNumber })}
                   </Typography>
                   <TextField
-                    label="Reps"
+                    label={tc("reps")}
                     type="number"
                     size="small"
                     value={set.reps ?? ""}
@@ -196,7 +285,7 @@ export default function ActiveWorkout({ workout: initialWorkout }: ActiveWorkout
                     sx={{ width: 75 }}
                   />
                   <TextField
-                    label="Vekt"
+                    label={tc("weight")}
                     type="number"
                     size="small"
                     value={set.weight ?? ""}
@@ -209,6 +298,93 @@ export default function ActiveWorkout({ workout: initialWorkout }: ActiveWorkout
           </Card>
         ))}
       </Stack>
+      <Button
+        variant="outlined"
+        fullWidth
+        startIcon={<AddIcon />}
+        onClick={() => setShowAddDialog(true)}
+        sx={{ mt: 2 }}
+      >
+        {t("addExercise")}
+      </Button>
+
+      <Button
+        variant="contained"
+        color="success"
+        fullWidth
+        onClick={finishWorkout}
+        disabled={finishing}
+        sx={{ mt: 2 }}
+      >
+        {finishing ? t("finishing") : t("finish")}
+      </Button>
+
+      <Dialog
+        open={showAddDialog}
+        onClose={() => setShowAddDialog(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>{t("addExercise")}</DialogTitle>
+        <DialogContent>
+          <FormControl fullWidth size="small" sx={{ mt: 1, mb: 2 }}>
+            <InputLabel>{t("bodyPart")}</InputLabel>
+            <Select
+              value={bodyPartFilter}
+              label={t("bodyPart")}
+              onChange={(e) => setBodyPartFilter(e.target.value)}
+            >
+              <MenuItem value="">{tc("all")}</MenuItem>
+              {bodyParts.map((bp) => (
+                <MenuItem key={bp} value={bp}>
+                  {bp}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <List disablePadding>
+            {filteredExercises.map((ex) => (
+              <ListItemButton
+                key={ex.id}
+                onClick={() => addExerciseToWorkout(ex.id)}
+                disabled={addingExercise}
+              >
+                <ListItemText
+                  primary={ex.name}
+                  secondary={`${ex.bodyPart} · ${tc("level", { level: ex.level })} · ${ex.defaultSets} x ${ex.defaultReps}`}
+                />
+                {ex.videoUrl && (
+                  <PlayCircleOutlineIcon fontSize="small" color="primary" sx={{ ml: 1 }} />
+                )}
+              </ListItemButton>
+            ))}
+          </List>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showCelebration} onClose={() => setShowCelebration(false)} maxWidth="xs" fullWidth>
+        <DialogContent sx={{ textAlign: "center", py: 4 }}>
+          <EmojiEventsIcon sx={{ fontSize: 80, color: "primary.main", mb: 2 }} />
+          <Typography variant="h4" fontWeight="bold" gutterBottom>
+            {t("celebrationTitle")}
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            {t("celebrationMessage")}
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "center", pb: 3 }}>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={() => {
+              setShowCelebration(false);
+              router.push("/workouts");
+            }}
+          >
+            {t("celebrationClose")}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 }

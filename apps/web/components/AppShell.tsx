@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -9,22 +10,26 @@ import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import SterkLogo from "./SterkLogo";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import HistoryIcon from "@mui/icons-material/History";
 import LogoutIcon from "@mui/icons-material/Logout";
-
-const NAV_ITEMS = [
-  { label: "Treningsøkter", href: "/workouts", icon: <ListAltIcon /> },
-  { label: "Ny", href: "/workouts/new", icon: <AddCircleIcon /> },
-  { label: "Øvelser", href: "/exercises", icon: <FitnessCenterIcon /> },
-  { label: "Historikk", href: "/history", icon: <HistoryIcon /> },
-];
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const t = useTranslations("nav");
+  const tc = useTranslations("common");
+
+  const NAV_ITEMS = [
+    { label: t("workouts"), href: "/workouts", icon: <ListAltIcon /> },
+    { label: t("new"), href: "/workouts/new", icon: <AddCircleIcon /> },
+    { label: t("exercises"), href: "/exercises", icon: <FitnessCenterIcon /> },
+    { label: t("history"), href: "/history", icon: <HistoryIcon /> },
+  ];
 
   const currentIndex = NAV_ITEMS.findIndex((item) => pathname.startsWith(item.href));
 
@@ -38,11 +43,23 @@ export default function AppShell({ children }: { children: ReactNode }) {
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <AppBar position="sticky" elevation={0}>
         <Toolbar>
-          <FitnessCenterIcon sx={{ mr: 1, color: "primary.main" }} />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Fitness App
+          <SterkLogo sx={{ fontSize: 32, mr: 1 }} />
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              flexGrow: 1,
+              fontWeight: 900,
+              letterSpacing: "0.08em",
+              background: "linear-gradient(135deg, #00E676, #66FFA6)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            STERK
           </Typography>
-          <IconButton color="inherit" onClick={handleLogout} title="Logg ut">
+          <LanguageSwitcher />
+          <IconButton color="inherit" onClick={handleLogout} title={tc("logOut")}>
             <LogoutIcon />
           </IconButton>
         </Toolbar>

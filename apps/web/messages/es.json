@@ -1,0 +1,93 @@
+{
+  "common": {
+    "all": "Todos",
+    "level": "Nivel {level}",
+    "reps": "Reps",
+    "weight": "Peso (kg)",
+    "set": "Serie {number}",
+    "setHeader": "Serie",
+    "sets": "series",
+    "exercises": "ejercicios",
+    "selected": "{count} seleccionados",
+    "logOut": "Cerrar sesión"
+  },
+  "nav": {
+    "workouts": "Entrenamientos",
+    "new": "Nuevo",
+    "exercises": "Ejercicios",
+    "history": "Historial"
+  },
+  "slogan": "Entrena inteligente. Sin lesiones.",
+  "login": {
+    "failed": "Error de inicio de sesión",
+    "username": "Nombre de usuario",
+    "password": "Contraseña",
+    "loggingIn": "Iniciando sesión...",
+    "logIn": "Iniciar sesión",
+    "noAccount": "¿No tienes una cuenta?",
+    "register": "Regístrate"
+  },
+  "register": {
+    "failed": "Error en el registro",
+    "username": "Nombre de usuario",
+    "email": "Correo electrónico",
+    "nameOptional": "Nombre (opcional)",
+    "password": "Contraseña",
+    "minChars": "Al menos 8 caracteres",
+    "registering": "Registrando...",
+    "register": "Registrarse",
+    "hasAccount": "¿Ya tienes una cuenta?",
+    "logIn": "Iniciar sesión"
+  },
+  "exerciseLibrary": {
+    "title": "Ejercicios",
+    "favourites": "Favoritos",
+    "noFavourites": "Aún no tienes ejercicios favoritos. Toca el corazón en un ejercicio para añadirlo."
+  },
+  "exerciseDetail": {
+    "video": "Video",
+    "source": "Fuente: skadefri.no",
+    "noContent": "No hay descripción ni video disponible para este ejercicio."
+  },
+  "workoutList": {
+    "title": "Entrenamientos",
+    "new": "Nuevo",
+    "empty": "No hay entrenamientos aún. ¡Crea el primero!"
+  },
+  "createWorkout": {
+    "title": "Nuevo entrenamiento",
+    "nameLabel": "Nombre del entrenamiento",
+    "namePlaceholder": "Ej. Entrenamiento de rodilla lunes",
+    "exercises": "Ejercicios",
+    "nameRequired": "Introduce un nombre para el entrenamiento",
+    "exercisesRequired": "Debes añadir al menos un ejercicio antes de crear el entrenamiento",
+    "sessionExpired": "Tu sesión ha expirado. Por favor, inicia sesión de nuevo.",
+    "genericError": "Algo salió mal. Inténtalo de nuevo.",
+    "creating": "Creando...",
+    "create": "Crear entrenamiento",
+    "addSet": "Añadir serie",
+    "addExercise": "Añadir ejercicio",
+    "pickExercise": "Elegir ejercicio"
+  },
+  "activeWorkout": {
+    "progress": "Progreso",
+    "addExercise": "Añadir ejercicio",
+    "bodyPart": "Parte del cuerpo",
+    "finish": "Finalizar entrenamiento",
+    "finishing": "Finalizando...",
+    "celebrationTitle": "¡Buen trabajo! 🎉",
+    "celebrationMessage": "Has completado todo el entrenamiento. ¡Gran esfuerzo!",
+    "celebrationClose": "Listo"
+  },
+  "workoutOverview": {
+    "start": "Iniciar entrenamiento",
+    "starting": "Iniciando...",
+    "activeSession": "Tienes una sesión activa",
+    "resume": "Continuar"
+  },
+  "history": {
+    "title": "Historial",
+    "empty": "No hay historial de entrenamientos aún.",
+    "completed": "Completado"
+  }
+}

@@ -48,15 +48,19 @@ model FavouriteExercise {
 }
 
 model Workout {
-  id        String            @id @default(cuid())
-  name      String
-  date      DateTime          @default(now())
-  completed Boolean           @default(false)
-  userId    String
-  user      User              @relation(fields: [userId], references: [id])
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
-  exercises WorkoutExercise[]
+  id          String            @id @default(cuid())
+  name        String
+  date        DateTime          @default(now())
+  completed   Boolean           @default(false)
+  completedAt DateTime?
+  userId      String
+  user        User              @relation(fields: [userId], references: [id])
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  exercises   WorkoutExercise[]
+  templateId  String?
+  template    Workout?          @relation("WorkoutSessions", fields: [templateId], references: [id])
+  sessions    Workout[]         @relation("WorkoutSessions")
 
   @@index([userId])
 }

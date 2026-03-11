@@ -8,7 +8,7 @@ export default async function WorkoutsPage() {
   if (!session) redirect("/login");
 
   const workouts = await prisma.workout.findMany({
-    where: { userId: session.userId },
+    where: { userId: session.userId, templateId: null },
     include: {
       exercises: {
         include: {

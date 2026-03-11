@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations, useLocale } from "next-intl";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
@@ -37,14 +38,18 @@ interface WorkoutHistoryProps {
 }
 
 export default function WorkoutHistory({ workouts }: WorkoutHistoryProps) {
+  const t = useTranslations("history");
+  const tc = useTranslations("common");
+  const locale = useLocale();
+
   return (
     <Container maxWidth="sm" sx={{ py: 2 }}>
       <Typography variant="h5" fontWeight="bold" gutterBottom>
-        Historikk
+        {t("title")}
       </Typography>
 
       {workouts.length === 0 && (
-        <Typography color="text.secondary">Ingen treningshistorikk ennå.</Typography>
+        <Typography color="text.secondary">{t("empty")}</Typography>
       )}
 
       <Stack spacing={2}>
@@ -63,7 +68,7 @@ export default function WorkoutHistory({ workouts }: WorkoutHistoryProps) {
                   {workout.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {new Date(workout.date).toLocaleDateString("nb-NO")}
+                  {new Date(workout.date).toLocaleDateString(locale)}
                 </Typography>
               </Box>
 
@@ -79,10 +84,10 @@ export default function WorkoutHistory({ workouts }: WorkoutHistoryProps) {
                   <Table size="small">
                     <TableHead>
                       <TableRow>
-                        <TableCell>Sett</TableCell>
-                        <TableCell align="right">Reps</TableCell>
-                        <TableCell align="right">Vekt (kg)</TableCell>
-                        <TableCell align="center">Utført</TableCell>
+                        <TableCell>{tc("setHeader")}</TableCell>
+                        <TableCell align="right">{tc("reps")}</TableCell>
+                        <TableCell align="right">{tc("weight")}</TableCell>
+                        <TableCell align="center">{t("completed")}</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>

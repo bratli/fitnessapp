@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -9,11 +10,14 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import Link from "@mui/material/Link";
-import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import NextLink from "next/link";
+import SterkLogo from "@/components/SterkLogo";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function LoginPage() {
   const router = useRouter();
+  const t = useTranslations("login");
+  const ts = useTranslations();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -32,7 +36,7 @@ export default function LoginPage() {
 
     if (!res.ok) {
       const data = await res.json();
-      setError(typeof data.error === "string" ? data.error : "Innlogging feilet");
+      setError(typeof data.error === "string" ? data.error : t("failed"));
       setLoading(false);
       return;
     }
@@ -43,6 +47,9 @@ export default function LoginPage() {
 
   return (
     <Container maxWidth="xs">
+      <Box sx={{ position: "absolute", top: 16, right: 16 }}>
+        <LanguageSwitcher />
+      </Box>
       <Box
         sx={{
           display: "flex",
@@ -52,9 +59,21 @@ export default function LoginPage() {
           minHeight: "100vh",
         }}
       >
-        <FitnessCenterIcon sx={{ fontSize: 56, color: "primary.main", mb: 1 }} />
-        <Typography variant="h4" fontWeight={800} gutterBottom>
-          Logg inn
+        <SterkLogo sx={{ fontSize: 72, mb: 1 }} />
+        <Typography
+          variant="h4"
+          fontWeight={900}
+          sx={{
+            letterSpacing: "0.1em",
+            background: "linear-gradient(135deg, #00E676, #66FFA6)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          STERK
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+          {ts("slogan")}
         </Typography>
 
         {error && (
@@ -65,7 +84,7 @@ export default function LoginPage() {
 
         <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%" }}>
           <TextField
-            label="Brukernavn"
+            label={t("username")}
             fullWidth
             required
             autoComplete="username"
@@ -74,7 +93,7 @@ export default function LoginPage() {
             sx={{ mb: 2 }}
           />
           <TextField
-            label="Passord"
+            label={t("password")}
             type="password"
             fullWidth
             required
@@ -90,14 +109,14 @@ export default function LoginPage() {
             size="large"
             disabled={loading}
           >
-            {loading ? "Logger inn..." : "Logg inn"}
+            {loading ? t("loggingIn") : t("logIn")}
           </Button>
         </Box>
 
         <Typography variant="body2" sx={{ mt: 2 }}>
-          Har du ikke en konto?{" "}
+          {t("noAccount")}{" "}
           <Link component={NextLink} href="/register">
-            Registrer deg
+            {t("register")}
           </Link>
         </Typography>
       </Box>
