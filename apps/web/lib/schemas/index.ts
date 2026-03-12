@@ -67,6 +67,13 @@ export const createWorkoutInputSchema = z.object({
 
 export type CreateWorkoutInput = z.infer<typeof createWorkoutInputSchema>;
 
+export const updateWorkoutInputSchema = z.object({
+  name: z.string().min(1).max(200),
+  exercises: z.array(addExerciseInputSchema).min(1),
+});
+
+export type UpdateWorkoutInput = z.infer<typeof updateWorkoutInputSchema>;
+
 export const updateSetInputSchema = z.object({
   reps: z.number().int().min(0).optional(),
   weight: z.number().min(0).optional(),

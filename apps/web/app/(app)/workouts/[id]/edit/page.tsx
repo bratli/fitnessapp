@@ -2,10 +2,9 @@ import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { verifySession } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import ActiveWorkout from "./ActiveWorkout";
-import WorkoutOverview from "./WorkoutOverview";
+import EditWorkoutForm from "./EditWorkoutForm";
 
-export default async function WorkoutPage({
+export default async function EditWorkoutPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -37,21 +36,16 @@ export default async function WorkoutPage({
     }),
   ]);
 
-  const favouriteIds = new Set(favourites.map((f) => f.exerciseId));
-
   if (!workout || workout.userId !== session.userId) notFound();
 
-  // If this is a template, show the overview with Start button
-  if (workout.templateId === null) {
-    const activeSession = await prisma.workout.findFirst({
-      where: { templateId: id, userId: session.userId, completed: false },
-      orderBy: { date: "desc" },
-      select: { id: true, date: true },
-    });
+  // Only templates can be edited
+  if (workout.templateId !== null) notFound();
 
-    return <WorkoutOverview workout={workout} activeSession={activeSession} />;
-  }
-
-  // If this is a session, show the active workout
-  return <ActiveWorkout workout={workout} allExercises={allExercises} favouriteIds={[...favouriteIds]} />;
+  return (
+    <EditWorkoutForm
+      workout={workout}
+      exercises={allExercises}
+      favouriteIds={favourites.map((f) => f.exerciseId)}
+    />
+  );
 }

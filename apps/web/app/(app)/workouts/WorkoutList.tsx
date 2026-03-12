@@ -12,6 +12,8 @@ import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import Alert from "@mui/material/Alert";
 
 interface WorkoutSummary {
   id: string;
@@ -22,17 +24,50 @@ interface WorkoutSummary {
   }[];
 }
 
-interface WorkoutListProps {
-  workouts: WorkoutSummary[];
+interface ActiveSession {
+  id: string;
+  name: string;
 }
 
-export default function WorkoutList({ workouts }: WorkoutListProps) {
+interface WorkoutListProps {
+  workouts: WorkoutSummary[];
+  userName: string;
+  activeSession: ActiveSession | null;
+}
+
+export default function WorkoutList({ workouts, userName, activeSession }: WorkoutListProps) {
   const router = useRouter();
   const t = useTranslations("workoutList");
   const tc = useTranslations("common");
 
   return (
     <Container maxWidth="sm" sx={{ py: 2 }}>
+      {/* Welcome greeting */}
+      <Typography variant="h6" sx={{ mb: 2 }}>
+        {t("greeting", { name: userName })}
+      </Typography>
+
+      {/* Active session banner */}
+      {activeSession && (
+        <Alert
+          severity="info"
+          sx={{ mb: 2, cursor: "pointer" }}
+          action={
+            <Button
+              color="inherit"
+              size="small"
+              startIcon={<PlayArrowIcon />}
+              onClick={() => router.push(`/workouts/${activeSession.id}`)}
+            >
+              {t("continueWorkout")}
+            </Button>
+          }
+          onClick={() => router.push(`/workouts/${activeSession.id}`)}
+        >
+          {t("activeSession")} – <strong>{activeSession.name}</strong>
+        </Alert>
+      )}
+
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h5" fontWeight="bold">
           {t("title")}

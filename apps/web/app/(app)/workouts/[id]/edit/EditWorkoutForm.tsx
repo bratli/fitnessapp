@@ -24,6 +24,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
@@ -37,24 +38,50 @@ interface Exercise {
   videoUrl: string | null;
 }
 
+interface WorkoutExercise {
+  id: string;
+  order: number;
+  exercise: {
+    id: string;
+    name: string;
+    bodyPart: string;
+    level: number;
+  };
+  sets: { setNumber: number; reps: number | null; weight: number | null }[];
+}
+
 interface SelectedExercise {
   exerciseId: string;
   sets: { setNumber: number; reps: number | undefined; weight: number | undefined }[];
 }
 
-interface CreateWorkoutFormProps {
+interface EditWorkoutFormProps {
+  workout: {
+    id: string;
+    name: string;
+    exercises: WorkoutExercise[];
+  };
   exercises: Exercise[];
   favouriteIds: string[];
 }
 
-export default function CreateWorkoutForm({ exercises, favouriteIds }: CreateWorkoutFormProps) {
+export default function EditWorkoutForm({ workout, exercises, favouriteIds }: EditWorkoutFormProps) {
   const router = useRouter();
-  const t = useTranslations("createWorkout");
+  const t = useTranslations("editWorkout");
   const tc = useTranslations("common");
   const te = useTranslations("exercises");
-  const [name, setName] = useState("");
+  const [name, setName] = useState(workout.name);
   const [nameError, setNameError] = useState("");
-  const [selectedExercises, setSelectedExercises] = useState<SelectedExercise[]>([]);
+  const [selectedExercises, setSelectedExercises] = useState<SelectedExercise[]>(
+    workout.exercises.map((wEx) => ({
+      exerciseId: wEx.exercise.id,
+      sets: wEx.sets.map((s) => ({
+        setNumber: s.setNumber,
+        reps: s.reps ?? undefined,
+        weight: s.weight ?? undefined,
+      })),
+    })),
+  );
   const [exercisesError, setExercisesError] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -164,8 +191,8 @@ export default function CreateWorkoutForm({ exercises, favouriteIds }: CreateWor
 
     setSubmitting(true);
 
-    const res = await fetch("/api/workouts", {
-      method: "POST",
+    const res = await fetch(`/api/workouts/${workout.id}`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, exercises: selectedExercises }),
     });
@@ -181,15 +208,19 @@ export default function CreateWorkoutForm({ exercises, favouriteIds }: CreateWor
       return;
     }
 
-    const workout = await res.json();
     router.push(`/workouts/${workout.id}`);
   }
 
   return (
     <Container maxWidth="sm" sx={{ py: 2 }}>
-      <Typography variant="h5" fontWeight="bold" gutterBottom>
-        {t("title")}
-      </Typography>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+        <IconButton onClick={() => router.push(`/workouts/${workout.id}`)}>
+          <ArrowBackIcon />
+        </IconButton>
+        <Typography variant="h5" fontWeight="bold">
+          {t("title")}
+        </Typography>
+      </Box>
 
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
@@ -318,7 +349,7 @@ export default function CreateWorkoutForm({ exercises, favouriteIds }: CreateWor
         onClick={handleSubmit}
         disabled={submitting}
       >
-        {submitting ? t("creating") : t("create")}
+        {submitting ? t("saving") : t("save")}
       </Button>
 
       <Dialog open={showPicker} onClose={() => setShowPicker(false)} fullWidth maxWidth="sm">

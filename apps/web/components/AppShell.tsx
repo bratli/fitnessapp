@@ -15,6 +15,7 @@ import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import SterkLogo from "./SterkLogo";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import HistoryIcon from "@mui/icons-material/History";
+import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LanguageSwitcher from "./LanguageSwitcher";
 
@@ -29,6 +30,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
     { label: t("new"), href: "/workouts/new", icon: <AddCircleIcon /> },
     { label: t("exercises"), href: "/exercises", icon: <FitnessCenterIcon /> },
     { label: t("history"), href: "/history", icon: <HistoryIcon /> },
+    { label: t("profile"), href: "/profile", icon: <PersonIcon /> },
   ];
 
   const currentIndex = NAV_ITEMS.findIndex((item) => pathname.startsWith(item.href));

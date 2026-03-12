@@ -13,7 +13,12 @@ export default async function HistoryPage() {
       templateId: { not: null },
       completed: true,
     },
-    include: {
+    select: {
+      id: true,
+      name: true,
+      date: true,
+      difficulty: true,
+      mood: true,
       exercises: {
         include: {
           exercise: true,

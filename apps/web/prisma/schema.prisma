@@ -8,15 +8,16 @@ datasource db {
 }
 
 model User {
-  id           String              @id @default(cuid())
-  username     String              @unique
-  email        String              @unique
-  passwordHash String
-  name         String?
-  createdAt    DateTime            @default(now())
-  updatedAt    DateTime            @updatedAt
-  workouts     Workout[]
-  favourites   FavouriteExercise[]
+  id              String              @id @default(cuid())
+  username        String              @unique
+  email           String              @unique
+  passwordHash    String
+  name            String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  workouts        Workout[]
+  favourites      FavouriteExercise[]
+  badges          UserBadge[]
 }
 
 model Exercise {
@@ -53,6 +54,8 @@ model Workout {
   date        DateTime          @default(now())
   completed   Boolean           @default(false)
   completedAt DateTime?
+  difficulty  Int?
+  mood        Int?
   userId      String
   user        User              @relation(fields: [userId], references: [id])
   createdAt   DateTime          @default(now())
@@ -90,4 +93,15 @@ model ExerciseSet {
 
   @@unique([workoutExerciseId, setNumber])
   @@index([workoutExerciseId])
+}
+
+model UserBadge {
+  id       String   @id @default(cuid())
+  userId   String
+  badgeId  String
+  earnedAt DateTime @default(now())
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+  @@index([userId])
 }

@@ -29,8 +29,17 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import AddIcon from "@mui/icons-material/Add";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ToggleButton from "@mui/material/ToggleButton";
 import DialogActions from "@mui/material/DialogActions";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
+import SentimentNeutralIcon from "@mui/icons-material/SentimentNeutral";
+import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
+import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 
 interface ExerciseSet {
   id: string;
@@ -74,23 +83,36 @@ interface ActiveWorkoutProps {
     defaultReps: string;
     videoUrl: string | null;
   }[];
+  favouriteIds: string[];
 }
 
-export default function ActiveWorkout({ workout: initialWorkout, allExercises }: ActiveWorkoutProps) {
+export default function ActiveWorkout({ workout: initialWorkout, allExercises, favouriteIds }: ActiveWorkoutProps) {
   const router = useRouter();
   const t = useTranslations("activeWorkout");
   const tc = useTranslations("common");
   const [workout, setWorkout] = useState(initialWorkout);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [bodyPartFilter, setBodyPartFilter] = useState("");
+  const [showFavourites, setShowFavourites] = useState(false);
   const [addingExercise, setAddingExercise] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [celebrationStep, setCelebrationStep] = useState<"congrats" | "feedback">("congrats");
+  const [difficulty, setDifficulty] = useState<number | null>(null);
+  const [mood, setMood] = useState<number | null>(null);
+  const [savingFeedback, setSavingFeedback] = useState(false);
   const [finishing, setFinishing] = useState(false);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
+  const [newBadges, setNewBadges] = useState<{ badgeId: string }[]>([]);
+  const tb = useTranslations("badges");
 
   const bodyParts = [...new Set(allExercises.map((e) => e.bodyPart))];
-  const filteredExercises = bodyPartFilter
-    ? allExercises.filter((e) => e.bodyPart === bodyPartFilter)
-    : allExercises;
+  const favouriteSet = new Set(favouriteIds);
+  const filteredExercises = allExercises.filter((e) => {
+    if (showFavourites && !favouriteSet.has(e.id)) return false;
+    if (bodyPartFilter && e.bodyPart !== bodyPartFilter) return false;
+    return true;
+  });
 
   const totalSets = workout.exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
   const completedSets = workout.exercises.reduce(
@@ -133,7 +155,11 @@ export default function ActiveWorkout({ workout: initialWorkout, allExercises }:
 
   async function finishWorkout() {
     setFinishing(true);
-    await fetch(`/api/workouts/${workout.id}`, { method: "PATCH" });
+    const res = await fetch(`/api/workouts/${workout.id}`, { method: "PATCH" });
+    if (res.ok) {
+      const data = await res.json();
+      setNewBadges(data.newBadges ?? []);
+    }
     setShowCelebration(true);
     setFinishing(false);
   }
@@ -319,6 +345,41 @@ export default function ActiveWorkout({ workout: initialWorkout, allExercises }:
         {finishing ? t("finishing") : t("finish")}
       </Button>
 
+      <Button
+        variant="text"
+        color="error"
+        fullWidth
+        onClick={() => setShowCancelDialog(true)}
+        sx={{ mt: 1 }}
+      >
+        {t("cancel")}
+      </Button>
+
+      {/* Cancel confirmation dialog */}
+      <Dialog open={showCancelDialog} onClose={() => setShowCancelDialog(false)} maxWidth="xs">
+        <DialogTitle>{t("cancelTitle")}</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" color="text.secondary">
+            {t("cancelMessage")}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowCancelDialog(false)}>{t("cancelNo")}</Button>
+          <Button
+            color="error"
+            variant="contained"
+            disabled={cancelling}
+            onClick={async () => {
+              setCancelling(true);
+              await fetch(`/api/workouts/${workout.id}`, { method: "DELETE" });
+              router.push("/workouts");
+            }}
+          >
+            {cancelling ? t("cancelling") : t("cancelYes")}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Dialog
         open={showAddDialog}
         onClose={() => setShowAddDialog(false)}
@@ -327,21 +388,32 @@ export default function ActiveWorkout({ workout: initialWorkout, allExercises }:
       >
         <DialogTitle>{t("addExercise")}</DialogTitle>
         <DialogContent>
-          <FormControl fullWidth size="small" sx={{ mt: 1, mb: 2 }}>
-            <InputLabel>{t("bodyPart")}</InputLabel>
-            <Select
-              value={bodyPartFilter}
-              label={t("bodyPart")}
-              onChange={(e) => setBodyPartFilter(e.target.value)}
+          <Box sx={{ display: "flex", gap: 1, mt: 1, mb: 2 }}>
+            <FormControl size="small" sx={{ flex: 1 }}>
+              <InputLabel>{t("bodyPart")}</InputLabel>
+              <Select
+                value={bodyPartFilter}
+                label={t("bodyPart")}
+                onChange={(e) => setBodyPartFilter(e.target.value)}
+              >
+                <MenuItem value="">{tc("all")}</MenuItem>
+                {bodyParts.map((bp) => (
+                  <MenuItem key={bp} value={bp}>
+                    {bp}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <ToggleButton
+              value="favourites"
+              selected={showFavourites}
+              onChange={() => setShowFavourites((prev) => !prev)}
+              size="small"
+              sx={{ px: 1.5 }}
             >
-              <MenuItem value="">{tc("all")}</MenuItem>
-              {bodyParts.map((bp) => (
-                <MenuItem key={bp} value={bp}>
-                  {bp}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+              {showFavourites ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
+            </ToggleButton>
+          </Box>
           <List disablePadding>
             {filteredExercises.map((ex) => (
               <ListItemButton
@@ -353,6 +425,9 @@ export default function ActiveWorkout({ workout: initialWorkout, allExercises }:
                   primary={ex.name}
                   secondary={`${ex.bodyPart} · ${tc("level", { level: ex.level })} · ${ex.defaultSets} x ${ex.defaultReps}`}
                 />
+                {favouriteSet.has(ex.id) && (
+                  <FavoriteIcon fontSize="small" color="error" sx={{ ml: 0.5 }} />
+                )}
                 {ex.videoUrl && (
                   <PlayCircleOutlineIcon fontSize="small" color="primary" sx={{ ml: 1 }} />
                 )}
@@ -362,27 +437,159 @@ export default function ActiveWorkout({ workout: initialWorkout, allExercises }:
         </DialogContent>
       </Dialog>
 
-      <Dialog open={showCelebration} onClose={() => setShowCelebration(false)} maxWidth="xs" fullWidth>
+      <Dialog open={showCelebration} maxWidth="xs" fullWidth>
         <DialogContent sx={{ textAlign: "center", py: 4 }}>
-          <EmojiEventsIcon sx={{ fontSize: 80, color: "primary.main", mb: 2 }} />
-          <Typography variant="h4" fontWeight="bold" gutterBottom>
-            {t("celebrationTitle")}
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            {t("celebrationMessage")}
-          </Typography>
+          {celebrationStep === "congrats" ? (
+            <>
+              <EmojiEventsIcon sx={{ fontSize: 80, color: "primary.main", mb: 2 }} />
+              <Typography variant="h4" fontWeight="bold" gutterBottom>
+                {t("celebrationTitle")}
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                {t("celebrationMessage")}
+              </Typography>
+              {newBadges.length > 0 && (
+                <Box sx={{ mt: 3 }}>
+                  <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1 }}>
+                    {tb("newBadgeUnlocked")}
+                  </Typography>
+                  <Stack spacing={1}>
+                    {newBadges.map((b) => (
+                      <Chip
+                        key={b.badgeId}
+                        icon={<EmojiEventsIcon />}
+                        label={tb(b.badgeId)}
+                        color="primary"
+                        sx={{ fontSize: "0.85rem", py: 0.5 }}
+                      />
+                    ))}
+                  </Stack>
+                </Box>
+              )}
+            </>
+          ) : (
+            <>
+              <Typography variant="h5" fontWeight="bold" gutterBottom>
+                {t("feedbackTitle")}
+              </Typography>
+
+              <Box sx={{ mt: 3 }}>
+                <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1 }}>
+                  <FitnessCenterIcon sx={{ fontSize: 18, verticalAlign: "middle", mr: 0.5 }} />
+                  {t("feedbackDifficulty")}
+                </Typography>
+                <Stack direction="row" spacing={1} justifyContent="center">
+                  {[1, 2, 3, 4, 5].map((level) => (
+                    <IconButton
+                      key={level}
+                      onClick={() => setDifficulty(level)}
+                      sx={{
+                        width: 48,
+                        height: 48,
+                        border: 2,
+                        borderColor: difficulty === level ? "primary.main" : "divider",
+                        bgcolor: difficulty === level ? "primary.main" : "transparent",
+                        color: difficulty === level ? "black" : "text.secondary",
+                        "&:hover": { borderColor: "primary.main" },
+                      }}
+                    >
+                      <Typography variant="body1" fontWeight="bold">
+                        {level}
+                      </Typography>
+                    </IconButton>
+                  ))}
+                </Stack>
+                <Box sx={{ display: "flex", justifyContent: "space-between", mt: 0.5, px: 0.5 }}>
+                  <Typography variant="caption" color="text.secondary">
+                    {t("difficultyEasy")}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {t("difficultyHard")}
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Box sx={{ mt: 3 }}>
+                <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1 }}>
+                  {t("feedbackMood")}
+                </Typography>
+                <Stack direction="row" spacing={1} justifyContent="center">
+                  {[
+                    { value: 1, icon: <SentimentVeryDissatisfiedIcon /> },
+                    { value: 2, icon: <SentimentDissatisfiedIcon /> },
+                    { value: 3, icon: <SentimentNeutralIcon /> },
+                    { value: 4, icon: <SentimentSatisfiedIcon /> },
+                    { value: 5, icon: <SentimentVerySatisfiedIcon /> },
+                  ].map(({ value, icon }) => (
+                    <IconButton
+                      key={value}
+                      onClick={() => setMood(value)}
+                      sx={{
+                        width: 48,
+                        height: 48,
+                        border: 2,
+                        borderColor: mood === value ? "primary.main" : "divider",
+                        bgcolor: mood === value ? "primary.main" : "transparent",
+                        color: mood === value ? "black" : "text.secondary",
+                        fontSize: 28,
+                        "&:hover": { borderColor: "primary.main" },
+                      }}
+                    >
+                      {icon}
+                    </IconButton>
+                  ))}
+                </Stack>
+                <Box sx={{ display: "flex", justifyContent: "space-between", mt: 0.5, px: 0.5 }}>
+                  <Typography variant="caption" color="text.secondary">
+                    {t("moodBad")}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {t("moodGreat")}
+                  </Typography>
+                </Box>
+              </Box>
+            </>
+          )}
         </DialogContent>
         <DialogActions sx={{ justifyContent: "center", pb: 3 }}>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={() => {
-              setShowCelebration(false);
-              router.push("/workouts");
-            }}
-          >
-            {t("celebrationClose")}
-          </Button>
+          {celebrationStep === "congrats" ? (
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => setCelebrationStep("feedback")}
+            >
+              {t("celebrationNext")}
+            </Button>
+          ) : (
+            <Stack direction="row" spacing={2}>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setShowCelebration(false);
+                  router.push("/workouts");
+                }}
+              >
+                {t("feedbackSkip")}
+              </Button>
+              <Button
+                variant="contained"
+                disabled={savingFeedback || (!difficulty && !mood)}
+                onClick={async () => {
+                  setSavingFeedback(true);
+                  await fetch(`/api/workouts/${workout.id}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ difficulty, mood }),
+                  });
+                  setSavingFeedback(false);
+                  setShowCelebration(false);
+                  router.push("/workouts");
+                }}
+              >
+                {t("feedbackSave")}
+              </Button>
+            </Stack>
+          )}
         </DialogActions>
       </Dialog>
     </Container>
